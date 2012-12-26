@@ -2,3 +2,4 @@
 --ui bdd
 --reporter dot
 --recursive
+--globals jQuery,XMLHttpRequest

@@ -1,6 +1,7 @@
 module.exports = XMLHttpRequest
 
 var EventEmitter = require('events').EventEmitter
+  , Response = require('./Response')
 
 function XMLHttpRequest() {
 	XMLHttpRequest._instances.push(this)
@@ -27,7 +28,7 @@ XMLHttpRequest.prototype =
 }
 
 function load(res) {
-	this._emit('load', { target: res })
+	this._emit('load', { target: res || new Response })
 }
 
 function open(method, url, async, user, password) {

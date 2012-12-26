@@ -26,7 +26,7 @@ describe('unit/ajax.js', function() {
 	describe('When response is type json', function() {
 		var body
 		before(function() {
-			var prom = fajax('a', function(res, bod) { body = bod })
+			var prom = fajax('a', function(res) { body = res.body })
 			  , request = prom.request
 			request._load(new Response(
 			{ headers: { 'Content-type': 'application/json' }

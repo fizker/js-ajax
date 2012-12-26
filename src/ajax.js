@@ -30,12 +30,21 @@ var fajax = (function() {
 		      }
 		  , opts = merge(defaults, opts)
 		  , request = new XMLHttpRequest()
-		request.addEventListener('load', success)
+		request.addEventListener('load', success.bind(this))
 		request.addEventListener('error', function() {})
 		request.addEventListener('progress', function() {})
 		request.open(opts.method.toUpperCase(), opts.url, true, null, null)
 		request.send()
-		return { request: request }
+
+		var ret = { request: request }
+		if(typeof(Q) != 'undefined') {
+			this.deferred = Q.defer()
+			ret.promise = this.deferred.promise
+		} else if(typeof(jQuery) != 'undefined') {
+			this.deferred = new jQuery.Deferred
+			ret.promise = this.deferred.promise()
+		}
+		return ret
 
 		function success(req) {
 			var res = req.target
@@ -43,7 +52,13 @@ var fajax = (function() {
 			if(res.getResponseHeader('content-type') == 'application/json') {
 				body = JSON.parse(body)
 			}
-			opts.onload(res, body)
+			res.body = body
+			if(opts.onload) {
+				opts.onload(res)
+			}
+			if(this.deferred) {
+				this.deferred.resolve(res)
+			}
 		}
 	}
 
