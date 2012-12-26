@@ -5,6 +5,8 @@ A tiny ender-wrapper around XMLHttpRequest.
 
 It is currently at 2023B unminified, 995B minified and 913B minified and gzipped.
 
+It can easily be included using ender!
+
 
 Browser support
 ---------------

@@ -1,10 +1,11 @@
 { "name": "fajax"
 , "version": "0.1.0"
 , "description": "A tiny ender-wrapper around XMLHttpRequest."
-, "main": "index.js"
+, "main": "src/ajax.js"
 , "scripts":
   { "test": "mocha"
   }
+, "ender": "ender.js"
 , "repository":
   { "type": "git"
   , "url": "git://github.com/fizker/js-ajax.git"
