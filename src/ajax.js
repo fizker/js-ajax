@@ -9,6 +9,7 @@ var fajax = (function() {
 
 	var defaults =
 	    { method: 'GET'
+	    , headers: {}
 	    }
 	  , orgDefaults = defaults
 	  , defer
@@ -17,7 +18,12 @@ var fajax = (function() {
 		defer = constr
 	}
 	ajax.defaults = function(newDefaults) {
+		normalizeHeaders(newDefaults)
 		defaults = merge(defaults, newDefaults)
+		if(defaults.accept) {
+			defaults.headers.Accept = defaults.accept
+			delete defaults.accept
+		}
 	}
 	ajax.reset = function() {
 		defaults = orgDefaults
@@ -27,16 +33,21 @@ var fajax = (function() {
 	return ajax
 
 	function ajax(/*...args*/) {
-		var args = arguments
-		var opts =
-		      args.length == 1
-		    ? args[0]
-		    : { url: args[0]
-		      , onload: args[1]
-		      }
-		  , opts = merge(defaults, opts)
-		  , request = new XMLHttpRequest()
+		var args = Array.prototype.slice.call(arguments)
+		var request = new XMLHttpRequest()
 		  , addEventListener = 'addEventListener'
+		  , opts = defaults
+		  , arg
+		while(arg = args.shift()) {
+			if(typeof(arg) == 'string') {
+				opts.url = arg
+			} else if(typeof(arg) == 'function') {
+				opts.onload = arg
+			} else {
+				opts = merge(opts, arg)
+			}
+		}
+		normalizeHeaders(opts)
 		if(request[addEventListener]) {
 			request[addEventListener]('load', success)
 		} else {
@@ -46,6 +57,12 @@ var fajax = (function() {
 					success(request)
 				}
 			}
+		}
+		if(opts.accept) {
+			opts.headers.Accept = opts.accept
+		}
+		for(var key in opts.headers) {
+			request.setRequestHeader(key, opts.headers[key])
 		}
 		request.open(opts.method.toUpperCase(), opts.url, true, null, null)
 		request.send()
@@ -65,7 +82,6 @@ var fajax = (function() {
 		return ret
 
 		function success(req) {
-		debugger
 			var res = req.target || req
 			  , body = res.responseText
 			if(res.getResponseHeader('content-type') == 'application/json') {
@@ -91,5 +107,21 @@ var fajax = (function() {
 			}
 		}
 		return ret
+	}
+
+	function normalizeHeaders(opts) {
+		var newHeaders = {}
+		  , headers = opts.headers || {}
+		for(var key in headers) {
+			var transformedKey = transformKey(key)
+			newHeaders[transformedKey] = headers[key]
+		}
+		opts.headers = newHeaders
+	}
+
+	function transformKey(key) {
+		return key.toLowerCase().replace(/(^|-)([a-z])/g, function(entireString, firstMatch, secondMatch) {
+			return firstMatch + secondMatch.toUpperCase()
+		})
 	}
 })()

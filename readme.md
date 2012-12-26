@@ -3,7 +3,7 @@ fajax
 
 A tiny ender-wrapper around XMLHttpRequest.
 
-It is currently at 2023B unminified, 995B minified and 913B minified and gzipped.
+It is currently at 2888B unminified, 1427B minified and 751B minified and gzipped.
 
 It can easily be included using ender!
 
@@ -12,6 +12,7 @@ Browser support
 ---------------
 
 It is tested in the following browsers:
+
 - Chrome v. 23
 - Firefox v. 17
 - Opera v. 12.11
@@ -34,6 +35,45 @@ the bundled server (placed in the same folder. It requires [node](http://nodejs.
 to run).
 
 
+API
+---
+
+Including this page in the browser (`window.fajax`) or through [ender][ender]
+(`$.ajax` or `require('fajax')`) gives you access to the basic method.
+
+It have two static methods:
+
+1.  `fajax.defer(deferConstructor)`: Assigns a specific defer-function. More on
+    this in the segment below.
+2.  `fajax.defaults(newDefaults)`: Updates the defaults. Notice that this adds
+    to the defaults, so
+
+        fajax.defaults({ method: 'post' });
+        fajax.defaults({ accept: 'application/json' })
+
+    is the same as
+
+        fajax.defaults(
+        { method: 'post'
+        , accept: 'application/json'
+        })
+
+The `fajax` function can take 3 arguments:
+
+1.  An options dictionary (more on this below).
+2.  A `string` of the url for the request. This can also be given as `url` in
+    the options dictionary.
+3.  A `function` that will be called when the request is complete. This can also
+    be given as `onload` in the options dictionary.
+
+The options dictionary supports the following keys:
+
+ -  `headers`: A key-value based list of request headers to set.
+ -  `accept`: The accept header. This defaults to the browsers normal value.
+    If `accept` is set here, it will override the value in the headers-list.
+ -  `method`: The http-method to use. It defaults to `GET`.
+
+
 Support for promises
 --------------------
 
@@ -49,5 +89,11 @@ return a deferred, which holds a `resolve()` and `reject()` method, as well as
 a `promise` property for accessing the promise. This syntax equals [Q][q] exactly,
 and it can actually be called like `fajax.defer(Q.defer)`.
 
+For an example on how to use this with [ender][ender], you can look at
+[the root client-side file](https://github.com/fizker/vp-lan/blob/master/client/js/index.js)
+for [vp-lan](https://github.com/fizker/vp-lan), a project that was the requirement
+behind this project.
+
 [jquery]: http://jquery.com
 [q]: http://documentup.com/kriskowal/q
+[ender]: http://ender.jit.su

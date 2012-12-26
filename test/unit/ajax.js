@@ -21,6 +21,19 @@ describe('unit/ajax.js', function() {
 			  , req = prom.request
 			expect(req.open).to.have.been.calledWith('ABC')
 		})
+		it('should support setting headers', function() {
+			var req = fajax({ headers: { accept: 'abc/def', 'ghi-jkl': 'mno' } }).request
+			expect(req.setRequestHeader)
+				.to.have.been.calledWith('Accept', 'abc/def')
+				.and.to.have.been.calledWith('Ghi-Jkl', 'mno')
+		})
+		it('should not allow overriding the default `accept` ', function() {
+			fajax.defaults({ accept: 'abc' })
+			var req = fajax({ headers: { accept: 'def' } }).request
+			expect(req.setRequestHeader)
+				.to.have.been.calledWith('Accept', 'def')
+				.and.not.to.have.been.calledWith('Accept', 'abc')
+		})
 	})
 
 	describe('When response is type json', function() {
