@@ -13,6 +13,10 @@ http.createServer(function (req, res) {
 			res.end(data)
 		})
 	}
+	if(req.url == '/json') {
+		res.writeHead(200, {'Content-Type': 'application/json' })
+		res.end('{ "a":1, "b":2 }')
+	}
 	res.writeHead(200, {'Content-Type': 'text/plain'});
 	res.end('method was: ' + req.method);
 }).listen(1337);

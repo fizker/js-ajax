@@ -10,16 +10,26 @@
 	<option>head
 	<option>put
 </select></label>
+<label>Wanted response: <select name=url>
+	<option>json
+	<option>xml
+	<option>html
+	<option>text
+</select></label>
 <button type=button>Make request</button>
 
 <script src=/ajax.js></script>
 <script>
 $$('button').addEventListener('click', function() {
-	var method = $$('select').value
+	var method = $$('[name=method]').value
+	  , url = $$('[name=url]').value
 	fajax(
-	{ url: '/test'
+	{ url: '/' + url
 	, method: method
-	, onload: function() { console.log('got response') }
+	, onload: function(res, body) {
+		console.log(res.getResponseHeader('content-type'))
+		console.log('got response:', res, body)
+	}
 	})
 })
 

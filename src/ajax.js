@@ -22,11 +22,21 @@ var fajax = (function() {
 		      }
 		  , opts = merge(defaults, opts)
 		  , request = new XMLHttpRequest()
-		request.addEventListener('load', opts.onload)
+		request.addEventListener('load', success)
 		request.addEventListener('error', function() {})
 		request.addEventListener('progress', function() {})
 		request.open(opts.method, opts.url, true, null, null)
 		request.send()
+		return { request: request }
+
+		function success(req) {
+			var res = req.target
+			  , body = res.response
+			if(res.getResponseHeader('content-type') == 'application/json') {
+				body = JSON.parse(body)
+			}
+			opts.onload(res, body)
+		}
 	}
 
 	function merge(/*...args*/) {

@@ -1,11 +1,27 @@
 describe('unit/ajax.js', function() {
 	var fajax
+	  , Response = require('../helpers/Response')
 	before(function() {
 		global.XMLHttpRequest = require('../helpers/XMLHttpRequest')
 		fajax = require('../../src/ajax')
 	})
 	after(function() {
 		delete global.XMLHttpRequest
+	})
+
+	describe('When response is type json', function() {
+		var body
+		before(function() {
+			var prom = fajax('a', function(res, bod) { body = bod })
+			  , request = prom.request
+			request._load(new Response(
+			{ headers: { 'Content-type': 'application/json' }
+			, body: { a: 1, b: 2 }
+			}))
+		})
+		it('should automatically parse it', function() {
+			expect(body).to.deep.equal({ a: 1, b: 2 })
+		})
 	})
 
 	describe('When calling `fajax(opts)`', function() {
@@ -55,8 +71,8 @@ describe('unit/ajax.js', function() {
 		})
 		describe('and data is loaded', function() {
 			it('should call the callback', function() {
-				var fakeEvent = {}
-				instance._emitter.emit('load', fakeEvent)
+				var fakeEvent = new Response()
+				instance._load(fakeEvent)
 				expect(callback).to.have.been.calledWith(fakeEvent)
 			})
 		})
