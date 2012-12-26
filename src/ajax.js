@@ -1,9 +1,16 @@
-;(function() {
-	module.exports = ajax
+var fajax = (function() {
+	if(typeof(module) != 'undefined'
+	&& module.exports
+	&& typeof(exports) != 'undefined'
+	) {
+		module.exports = ajax
+	}
 
 	var defaults =
 	    { method: 'GET'
 	    }
+
+	return ajax
 
 	function ajax(/*...args*/) {
 		var args = arguments
@@ -19,6 +26,7 @@
 		request.addEventListener('error', function() {})
 		request.addEventListener('progress', function() {})
 		request.open(opts.method, opts.url, true, null, null)
+		request.send()
 	}
 
 	function merge(/*...args*/) {

@@ -5,6 +5,7 @@ var EventEmitter = require('events').EventEmitter
 function XMLHttpRequest() {
 	XMLHttpRequest._instances.push(this)
 	sinon.fake(this, 'open')
+	sinon.fake(this, 'send')
 	sinon.fake(this, 'setRequestHeader')
 	this._emitter = new EventEmitter
 	this.addEventListener = this._emitter.on.bind(this._emitter)
@@ -19,10 +20,13 @@ XMLHttpRequest._reset = function reset() {
 XMLHttpRequest.prototype =
 { open: open
 , setRequestHeader: setRequestHeader
+, send: send
 , _headers: {}
 }
 
 function open(method, url, async, user, password) {
+}
+function send() {
 }
 
 function setRequestHeader(header, value) {

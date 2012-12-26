@@ -43,6 +43,10 @@ describe('unit/ajax.js', function() {
 			expect(instance.open)
 				.to.have.been.calledWith('GET', 'abc', true, null, null)
 		})
+		it('should execute send on the XMLHttpRequest', function() {
+			expect(instance.send)
+				.to.have.been.called
+		})
 		it('should listen to the proper events', function() {
 			expect(instance.addEventListener)
 				.to.have.been.calledWith('load')

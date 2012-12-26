@@ -1,0 +1,38 @@
+<!doctype html>
+
+<div id=results>
+</div>
+
+<label>Method: <select name=method>
+	<option>post
+	<option>get
+	<option>delete
+	<option>head
+	<option>put
+</select></label>
+<button type=button>Make request</button>
+
+<script src=/ajax.js></script>
+<script>
+$$('button').addEventListener('click', function() {
+	var method = $$('select').value
+	fajax(
+	{ url: '/test'
+	, method: method
+	, onload: function() { console.log('got response') }
+	})
+})
+
+function $(sel, scope) {
+	if(typeof(scope) == 'string') {
+		scope = $$(scope)
+	}
+	return Array.prototype.slice.call((scope||document).querySelectorAll(sel))
+}
+function $$(sel, scope) {
+	if(typeof(scope) == 'string') {
+		scope = $$(scope)
+	}
+	return (scope||document).querySelector(sel)
+}
+</script>
