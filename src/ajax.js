@@ -10,12 +10,17 @@ var fajax = (function() {
 	    { method: 'GET'
 	    }
 	  , orgDefaults = defaults
+	  , defer
 
+	ajax.defer = function(constr) {
+		defer = constr
+	}
 	ajax.defaults = function(newDefaults) {
 		defaults = merge(defaults, newDefaults)
 	}
 	ajax.reset = function() {
 		defaults = orgDefaults
+		defer = null
 	}
 
 	return ajax
@@ -37,7 +42,10 @@ var fajax = (function() {
 		request.send()
 
 		var ret = { request: request }
-		if(typeof(Q) != 'undefined') {
+		if(defer) {
+			this.deferred = defer()
+			ret.promise = this.deferred.promise
+		} else if(typeof(Q) != 'undefined') {
 			this.deferred = Q.defer()
 			ret.promise = this.deferred.promise
 		} else if(typeof(jQuery) != 'undefined') {
