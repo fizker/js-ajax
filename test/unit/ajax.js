@@ -79,8 +79,6 @@ describe('unit/ajax.js', function() {
 		it('should listen to the proper events', function() {
 			expect(instance.addEventListener)
 				.to.have.been.calledWith('load')
-				.and.to.have.been.calledWith('error')
-				.and.to.have.been.calledWith('progress')
 		})
 		describe('and data is loaded', function() {
 			it('should call the callback', function() {

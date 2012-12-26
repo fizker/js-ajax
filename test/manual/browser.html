@@ -4,26 +4,27 @@
 </div>
 
 <label>Method: <select name=method>
-	<option>post
-	<option>get
-	<option>delete
-	<option>head
-	<option>put
+	<option>post<option>
+	<option>get<option>
+	<option>delete<option>
+	<option>head<option>
+	<option>put<option>
 </select></label>
 <label>Wanted response: <select name=url>
-	<option>json
-	<option>xml
-	<option>html
-	<option>text
+	<option>json<option>
+	<option>xml<option>
+	<option>html<option>
+	<option>text<option>
+	<option>status-500<option>
 </select></label>
 <button type=button>Make request</button>
 
 <script src=//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js></script>
 <script src=/ajax.js></script>
 <script>
-$$('button').addEventListener('click', function() {
-	var method = $$('[name=method]').value
-	  , url = $$('[name=url]').value
+$('button').on('click', function() {
+	var method = $('[name=method]').val()
+	  , url = $('[name=url]').val()
 	fajax(
 	{ url: '/' + url
 	, method: method
@@ -32,17 +33,4 @@ $$('button').addEventListener('click', function() {
 		console.log('got response:', res.body)
 	})
 })
-
-function $(sel, scope) {
-	if(typeof(scope) == 'string') {
-		scope = $$(scope)
-	}
-	return Array.prototype.slice.call((scope||document).querySelectorAll(sel))
-}
-function $$(sel, scope) {
-	if(typeof(scope) == 'string') {
-		scope = $$(scope)
-	}
-	return (scope||document).querySelector(sel)
-}
 </script>

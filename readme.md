@@ -3,6 +3,26 @@ fajax
 
 A tiny ender-wrapper around XMLHttpRequest.
 
+It is currently at 2023B unminified, 995B minified and 913B minified and gzipped.
+
+
+Browser support
+---------------
+
+It is tested in the following browsers:
+- Chrome v. 23
+- Firefox v. 17
+- Opera v. 12.11
+- Safari v. 6
+- IE v. 9
+- IE v. 8
+
+It does not work in IE7 or below out of the box when receiving `application/json`,
+because `JSON.parse` is not supported. If this is a requirement, then use something
+like [json2](https://github.com/douglascrockford/JSON-js) from
+Douglas Crockford. Everything else seems to work.
+
+
 Examples
 --------
 

@@ -10,9 +10,9 @@ function Response(opts) {
 			return headers
 		}.bind(this), {})
 	this.status = this.opts.status || 200
-	this.response = this.opts.body || 'OK'
+	this.responseText = this.response = this.opts.body || 'OK'
 	if(typeof(this.response) != 'string') {
-		this.response = JSON.stringify(this.response)
+		this.response = this.responseText = JSON.stringify(this.response)
 	}
 }
 

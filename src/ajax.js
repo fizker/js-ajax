@@ -1,4 +1,5 @@
 var fajax = (function() {
+	/* Simple check to see if we are running node (used for the tests) */
 	if(typeof(module) != 'undefined'
 	&& module.exports
 	&& typeof(exports) != 'undefined'
@@ -35,28 +36,38 @@ var fajax = (function() {
 		      }
 		  , opts = merge(defaults, opts)
 		  , request = new XMLHttpRequest()
-		request.addEventListener('load', success.bind(this))
-		request.addEventListener('error', function() {})
-		request.addEventListener('progress', function() {})
+		  , addEventListener = 'addEventListener'
+		if(request[addEventListener]) {
+			request[addEventListener]('load', success)
+		} else {
+			/* Fuck IE8- */
+			request.onreadystatechange = function() {
+				if(request.readyState == 4) {
+					success(request)
+				}
+			}
+		}
 		request.open(opts.method.toUpperCase(), opts.url, true, null, null)
 		request.send()
 
 		var ret = { request: request }
+		  , deferred
 		if(defer) {
-			this.deferred = defer()
-			ret.promise = this.deferred.promise
+			deferred = defer()
+			ret.promise = deferred.promise
 		} else if(typeof(Q) != 'undefined') {
-			this.deferred = Q.defer()
-			ret.promise = this.deferred.promise
+			deferred = Q.defer()
+			ret.promise = deferred.promise
 		} else if(typeof(jQuery) != 'undefined') {
-			this.deferred = new jQuery.Deferred
-			ret.promise = this.deferred.promise()
+			deferred = new jQuery.Deferred
+			ret.promise = deferred.promise()
 		}
 		return ret
 
 		function success(req) {
-			var res = req.target
-			  , body = res.response
+		debugger
+			var res = req.target || req
+			  , body = res.responseText
 			if(res.getResponseHeader('content-type') == 'application/json') {
 				body = JSON.parse(body)
 			}
@@ -64,19 +75,21 @@ var fajax = (function() {
 			if(opts.onload) {
 				opts.onload(res)
 			}
-			if(this.deferred) {
-				this.deferred.resolve(res)
+			if(deferred) {
+				deferred.resolve(res)
 			}
 		}
 	}
 
 	function merge(/*...args*/) {
 		var args = Array.prototype.slice.call(arguments)
-		return args.reduce(function(ret, a) {
+		  , ret = {}
+		for(var i = 0, l = args.length; i < l; i++) {
+			var a = args[i]
 			for(var key in a) {
 				ret[key] = a[key]
 			}
-			return ret
-		}, {})
+		}
+		return ret
 	}
 })()
