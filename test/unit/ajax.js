@@ -9,6 +9,20 @@ describe('unit/ajax.js', function() {
 		delete global.XMLHttpRequest
 	})
 
+	describe('When changing options', function() {
+		it('should allow overriding defaults', function() {
+			fajax.defaults({ method: 'abc' })
+			var req = fajax('any url').request
+			expect(req.open).to.have.been.calledWith('ABC')
+			fajax.reset()
+		})
+		it('should send the new method blindly', function() {
+			var prom = fajax({ method: 'abc', url: 'a' })
+			  , req = prom.request
+			expect(req.open).to.have.been.calledWith('ABC')
+		})
+	})
+
 	describe('When response is type json', function() {
 		var body
 		before(function() {
@@ -35,8 +49,7 @@ describe('unit/ajax.js', function() {
 			    { onload: callback
 			    , url: 'abc'
 			    }
-			fajax(opts)
-			instance = XMLHttpRequest._instances[0]
+			instance = fajax(opts).request
 		})
 		it('should properly assign the url and onload options', function() {
 			expect(instance.open).to.have.been.calledWith('GET', 'abc')

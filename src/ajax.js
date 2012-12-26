@@ -9,6 +9,14 @@ var fajax = (function() {
 	var defaults =
 	    { method: 'GET'
 	    }
+	  , orgDefaults = defaults
+
+	ajax.defaults = function(newDefaults) {
+		defaults = merge(defaults, newDefaults)
+	}
+	ajax.reset = function() {
+		defaults = orgDefaults
+	}
 
 	return ajax
 
@@ -25,7 +33,7 @@ var fajax = (function() {
 		request.addEventListener('load', success)
 		request.addEventListener('error', function() {})
 		request.addEventListener('progress', function() {})
-		request.open(opts.method, opts.url, true, null, null)
+		request.open(opts.method.toUpperCase(), opts.url, true, null, null)
 		request.send()
 		return { request: request }
 
