@@ -1,9 +1,14 @@
 module.exports = XMLHttpRequest
 
+var EventEmitter = require('events').EventEmitter
+
 function XMLHttpRequest() {
 	XMLHttpRequest._instances.push(this)
 	sinon.fake(this, 'open')
-	sinon.fake(this, 'setRequestHeader').andCallThrough
+	sinon.fake(this, 'setRequestHeader')
+	this._emitter = new EventEmitter
+	this.addEventListener = this._emitter.on.bind(this._emitter)
+	sinon.fake(this, 'addEventListener')
 }
 
 XMLHttpRequest._instances = []

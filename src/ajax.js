@@ -1,8 +1,33 @@
 ;(function() {
 	module.exports = ajax
 
-	function ajax(url) {
-		var request = new XMLHttpRequest()
-		request.open(url)
+	var defaults =
+	    { method: 'GET'
+	    }
+
+	function ajax(/*...args*/) {
+		var args = arguments
+		var opts =
+		      args.length == 1
+		    ? args[0]
+		    : { url: args[0]
+		      , onload: args[1]
+		      }
+		  , opts = merge(defaults, opts)
+		  , request = new XMLHttpRequest()
+		request.addEventListener('load', opts.onload)
+		request.addEventListener('error', function() {})
+		request.addEventListener('progress', function() {})
+		request.open(opts.method, opts.url, true, null, null)
+	}
+
+	function merge(/*...args*/) {
+		var args = Array.prototype.slice.call(arguments)
+		return args.reduce(function(ret, a) {
+			for(var key in a) {
+				ret[key] = a[key]
+			}
+			return ret
+		}, {})
 	}
 })()
