@@ -49,6 +49,15 @@ describe('unit/ajax.js', function() {
 		it('should automatically parse it', function() {
 			expect(body).to.deep.equal({ a: 1, b: 2 })
 		})
+		it('should parse properly when charset is also given', function() {
+			var prom = fajax('a', function(res) { body = res.body })
+			  , request = prom.request
+			request._load(new Response(
+			{ headers: { 'Content-type': 'application/json; charset=utf-8' }
+			, body: { a: 1, b: 2 }
+			}))
+			expect(body).to.deep.equal({ a: 1, b: 2 })
+		})
 	})
 
 	describe('When calling `fajax(opts)`', function() {

@@ -13,6 +13,9 @@ var fajax = (function() {
 	    }
 	  , orgDefaults = defaults
 	  , defer
+	  , contentTypes =
+	    { json: /^application\/json/
+	    }
 
 	ajax.defer = function(constr) {
 		defer = constr
@@ -84,7 +87,7 @@ var fajax = (function() {
 		function success(req) {
 			var res = req.target || req
 			  , body = res.responseText
-			if(res.getResponseHeader('content-type') == 'application/json') {
+			if(contentTypes.json.test(res.getResponseHeader('content-type'))) {
 				body = JSON.parse(body)
 			}
 			res.body = body

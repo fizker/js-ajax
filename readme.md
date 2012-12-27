@@ -3,7 +3,7 @@ fajax
 
 A tiny ender-wrapper around XMLHttpRequest.
 
-It is currently at 2888B unminified, 1427B minified and 751B minified and gzipped.
+It is currently at 2951B unminified, 1450B minified and 768B minified and gzipped.
 
 It can easily be included using ender!
 
