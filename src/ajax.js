@@ -58,13 +58,13 @@ var fajax = (function() {
 				}
 			}
 		}
+		request.open(opts.method.toUpperCase(), opts.url, true, null, null)
 		if(opts.accept) {
 			opts.headers.Accept = opts.accept
 		}
 		for(var key in opts.headers) {
 			request.setRequestHeader(key, opts.headers[key])
 		}
-		request.open(opts.method.toUpperCase(), opts.url, true, null, null)
 		request.send()
 
 		var ret = { request: request }

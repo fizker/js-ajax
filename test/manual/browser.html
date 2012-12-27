@@ -28,6 +28,7 @@ $('button').on('click', function() {
 	fajax(
 	{ url: '/' + url
 	, method: method
+	, accept: url == 'json' ? 'application/json' : 'text/plain'
 	}).promise.then(function(res) {
 		console.log(res.getResponseHeader('content-type'))
 		console.log('got response:', res.body)
