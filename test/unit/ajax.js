@@ -9,6 +9,60 @@ describe('unit/ajax.js', function() {
 		delete global.XMLHttpRequest
 	})
 
+	describe('When supplying json option', function() {
+		var req
+		beforeEach(function() {
+			req = fajax('/abc', {
+				json: { a: 1, b: [ 1, 2, 3 ] }
+			})
+		})
+		it('should send it encoded', function() {
+			expect(req.request.send)
+				.to.have.been.calledWith('{"a":1,"b":[1,2,3]}')
+		})
+		it('should set content-type to application/json', function() {
+			expect(req.request.setRequestHeader)
+				.to.have.been.calledWith('Content-Type', 'application/json')
+		})
+		it('should override content-type to match application/json', function() {
+			req = fajax(
+			  '/abc'
+			, { headers: { 'content-type': 'text/plain' }
+			  , json: { a: 1, b: [ 1, 2, 3 ] }
+			  }
+			)
+			expect(req.request.setRequestHeader)
+				.to.have.been.calledWith('Content-Type', 'application/json')
+		})
+	})
+
+	describe('When supplying body', function() {
+		var req
+		beforeEach(function() {
+			req = fajax('/abc', {
+				body: 'def'
+			})
+		})
+		it('should send as-is', function() {
+			expect(req.request.send)
+				.to.have.been.calledWith('def')
+		})
+		it('should use default content-type of text/plain', function() {
+			expect(req.request.setRequestHeader)
+				.to.have.been.calledWith('Content-Type', 'text/plain; charset=utf-8')
+		})
+		it('should not override explicit content-type', function() {
+			req = fajax(
+			  '/abc'
+			, { headers: { 'content-type': 'application/json' }
+			  , body: '{"a":1}'
+			  }
+			)
+			expect(req.request.setRequestHeader)
+				.to.have.been.calledWith('Content-Type', 'application/json')
+		})
+	})
+
 	describe('When changing options', function() {
 		it('should allow overriding defaults', function() {
 			fajax.defaults({ method: 'abc' })

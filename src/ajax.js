@@ -51,6 +51,7 @@ var fajax = (function() {
 			}
 		}
 		normalizeHeaders(opts)
+		prepareBody(opts)
 		if(request[addEventListener]) {
 			request[addEventListener]('load', success)
 		} else {
@@ -68,7 +69,7 @@ var fajax = (function() {
 		for(var key in opts.headers) {
 			request.setRequestHeader(key, opts.headers[key])
 		}
-		request.send()
+		request.send(opts.body)
 
 		var ret = { request: request }
 		  , deferred
@@ -120,6 +121,16 @@ var fajax = (function() {
 			newHeaders[transformedKey] = headers[key]
 		}
 		opts.headers = newHeaders
+	}
+
+	function prepareBody(opts) {
+		if(opts.json) {
+			opts.body = JSON.stringify(opts.json)
+			opts.headers['Content-Type'] = 'application/json'
+		}
+		if(opts.body && !opts.headers['Content-Type']) {
+			opts.headers['Content-Type'] = 'text/plain; charset=utf-8'
+		}
 	}
 
 	function transformKey(key) {
