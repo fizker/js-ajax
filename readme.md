@@ -3,7 +3,7 @@ fajax
 
 A tiny ender-wrapper around XMLHttpRequest.
 
-It is currently at 2951B unminified, 1450B minified and 768B minified and gzipped.
+It is currently at 3885B unminified, 2032B minified and 982B minified and gzipped.
 
 It can easily be included using ender!
 
@@ -41,11 +41,18 @@ API
 Including this page in the browser (`window.fajax`) or through [ender][ender]
 (`$.ajax` or `require('fajax')`) gives you access to the basic method.
 
-It have two static methods:
+It have three static methods:
 
 1.  `fajax.defer(deferConstructor)`: Assigns a specific defer-function. More on
     this in the segment below.
-2.  `fajax.defaults(newDefaults)`: Updates the defaults. Notice that this adds
+2.  `fajax.qs(queryStringCreator)`: Assings a specific query-string creator
+    function. This is used when `form` is specified in the options.
+
+    For example, it is simple to use the excellent [qs][qs] library:
+
+        // fajax and qs loaded via ender:
+        $.ajax.qs($.stringify)
+3.  `fajax.defaults(newDefaults)`: Updates the defaults. Notice that this adds
     to the defaults, so
 
         fajax.defaults({ method: 'post' });
@@ -72,6 +79,20 @@ The options dictionary supports the following keys:
  -  `accept`: The accept header. This defaults to the browsers normal value.
     If `accept` is set here, it will override the value in the headers-list.
  -  `method`: The http-method to use. It defaults to `GET`.
+ -  `body`: Sends some text to the server. It defaults the `Content-Type` header
+    to `text/plain`, but won't override a specifically set header.
+ -  `json`: Sends the given object as JSON. This requires JSON.stringify to be
+    available in global scope.
+
+    It will override `Content-Type` with `application/json`.
+ -  `form`: Sends the given string or object as form-parameters.
+    The basic implementation will only send a flat object, discarding any
+    values that are not `String`, `Boolean` or `Number`.
+
+    For a more extensive implementation, you can provide any function via the
+    `fajax.qs(func)` function.
+
+    It will override `Content-Type` with `application/x-www-form-urlencoded`.
 
 
 Support for promises
@@ -94,6 +115,8 @@ For an example on how to use this with [ender][ender], you can look at
 for [vp-lan](https://github.com/fizker/vp-lan), a project that was the requirement
 behind this project.
 
+
 [jquery]: http://jquery.com
 [q]: http://documentup.com/kriskowal/q
 [ender]: http://ender.jit.su
+[qs]: https://github.com/visionmedia/node-querystring
