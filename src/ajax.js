@@ -130,6 +130,7 @@ var fajax = (function() {
 
 	function prepareBody(opts) {
 		if(opts.form) {
+			opts.method = 'POST'
 			opts.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 			if(typeof(opts.form) != 'object') {
 				opts.body = opts.form.toString()

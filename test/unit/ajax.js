@@ -17,6 +17,10 @@ describe('unit/ajax.js', function() {
 					form: { a: 1, b: [ 1, 2, 3 ], c: 'a=b&c;' }
 				})
 			})
+			it('should send as POST', function() {
+				expect(req.request.open)
+					.to.have.been.calledWith('POST')
+			})
 			it('should format in a simplistic way', function() {
 				expect(req.request.send)
 					.to.have.been.calledWith('a=1&c=a%3Db%26c%3B')
@@ -31,6 +35,10 @@ describe('unit/ajax.js', function() {
 				req = fajax('/abc', {
 					form: 'a=1&b=2'
 				})
+			})
+			it('should send as POST', function() {
+				expect(req.request.open)
+					.to.have.been.calledWith('POST')
 			})
 			it('should send as-is', function() {
 				expect(req.request.send)
