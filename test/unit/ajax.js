@@ -9,6 +9,58 @@ describe('unit/ajax.js', function() {
 		delete global.XMLHttpRequest
 	})
 
+	describe('When using form option', function() {
+		var req
+		describe('with a JS object', function() {
+			beforeEach(function() {
+				req = fajax('/abc', {
+					form: { a: 1, b: [ 1, 2, 3 ], c: 'a=b&c;' }
+				})
+			})
+			it('should format in a simplistic way', function() {
+				expect(req.request.send)
+					.to.have.been.calledWith('a=1&c=a%3Db%26c%3B')
+			})
+			it('should set header correctly', function() {
+				expect(req.request.setRequestHeader)
+					.to.have.been.calledWith('Content-Type', 'application/x-www-form-urlencoded')
+			})
+		})
+		describe('with a string', function() {
+			beforeEach(function() {
+				req = fajax('/abc', {
+					form: 'a=1&b=2'
+				})
+			})
+			it('should send as-is', function() {
+				expect(req.request.send)
+					.to.have.been.calledWith('a=1&b=2')
+			})
+			it('should set header correctly', function() {
+				expect(req.request.setRequestHeader)
+					.to.have.been.calledWith('Content-Type', 'application/x-www-form-urlencoded')
+			})
+		})
+		describe('and qs is defined in global-scope', function() {
+			var req
+			  , fakeQs
+			beforeEach(function() {
+				fakeQs = sinon.fake()
+				fakeQs.returns('magic')
+				fajax.qs(fakeQs)
+				req = fajax('/abc', {
+					form: { a: 1 }
+				})
+				fajax.reset()
+			})
+			it('should use that instead', function() {
+				expect(fakeQs).to.have.been.calledWith({ a: 1 })
+				expect(req.request.send)
+					.to.have.been.calledWith('magic')
+			})
+		})
+	})
+
 	describe('When supplying json option', function() {
 		var req
 		beforeEach(function() {

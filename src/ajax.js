@@ -13,12 +13,16 @@ var fajax = (function() {
 	    }
 	  , orgDefaults = defaults
 	  , defer
+	  , qs
 	  , contentTypes =
 	    { json: /^application\/json/
 	    }
 
 	ajax.defer = function(constr) {
 		defer = constr
+	}
+	ajax.qs = function(func) {
+		qs = func
 	}
 	ajax.defaults = function(newDefaults) {
 		normalizeHeaders(newDefaults)
@@ -31,6 +35,7 @@ var fajax = (function() {
 	ajax.reset = function() {
 		defaults = orgDefaults
 		defer = null
+		qs = null
 	}
 
 	return ajax
@@ -124,12 +129,38 @@ var fajax = (function() {
 	}
 
 	function prepareBody(opts) {
+		if(opts.form) {
+			opts.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+			if(typeof(opts.form) != 'object') {
+				opts.body = opts.form.toString()
+				return
+			}
+			if(qs) {
+				opts.body = qs(opts.form)
+				return
+			}
+			opts.body = Object.keys(opts.form)
+				.map(function(key) {
+					var value = opts.form[key]
+					if(typeof(value) == 'object' || value == null) {
+						return null
+					}
+					return key + '=' + encodeURIComponent(value)
+				})
+				.filter(function(value) {
+					return !!value
+				})
+				.join('&')
+			return
+		}
 		if(opts.json) {
 			opts.body = JSON.stringify(opts.json)
 			opts.headers['Content-Type'] = 'application/json'
+			return
 		}
 		if(opts.body && !opts.headers['Content-Type']) {
 			opts.headers['Content-Type'] = 'text/plain; charset=utf-8'
+			return
 		}
 	}
 
