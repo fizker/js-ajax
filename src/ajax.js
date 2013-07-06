@@ -171,3 +171,7 @@ var fajax = (function() {
 		})
 	}
 })()
+// AMD support
+if(typeof(define) === 'function') {
+	define(function() { return fajax })
+}

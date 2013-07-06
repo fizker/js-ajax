@@ -1,11 +1,9 @@
 fajax
 =====
 
-A tiny ender-wrapper around XMLHttpRequest.
+A tiny wrapper around XMLHttpRequest.
 
-It is currently at 3885B unminified, 2032B minified and 982B minified and gzipped.
-
-It can easily be included using ender!
+It can easily be included using [ender][ender] or [require-js][require-js]!
 
 
 Browser support
@@ -30,9 +28,8 @@ Examples
 --------
 
 For a quick example, check [the manual test file](test/manual/browser.html).
-It uses [jQuery][jquery] as a promise library and `fajax` for calling
-the bundled server (placed in the same folder. It requires [node](http://nodejs.org)
-to run).
+It uses [jQuery][jquery] as a promise library and `fajax` for calling the
+bundled server (placed in the same folder. It requires [node][node] to run).
 
 
 API
@@ -112,11 +109,13 @@ and it can actually be called like `fajax.defer(Q.defer)`.
 
 For an example on how to use this with [ender][ender], you can look at
 [the root client-side file](https://github.com/fizker/vp-lan/blob/master/client/js/index.js)
-for [vp-lan](https://github.com/fizker/vp-lan), a project that was the requirement
-behind this project.
+for [vp-lan][vp-lan], a project that was the requirement behind this project.
 
 
 [jquery]: http://jquery.com
 [q]: http://documentup.com/kriskowal/q
 [ender]: http://ender.jit.su
+[require-js]: http://requirejs.org
 [qs]: https://github.com/visionmedia/node-querystring
+[vp-lan]: https://github.com/fizker/vp-lan
+[node]: http://nodejs.org

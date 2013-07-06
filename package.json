@@ -26,6 +26,8 @@
   [ "browser"
   , "ajax"
   , "ender"
+  , "amd"
+  , "requirejs"
   , "xmlhttprequest"
   ]
 , "author": "Benjamin Horsleben"
