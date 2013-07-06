@@ -5,6 +5,9 @@ A tiny wrapper around XMLHttpRequest.
 
 It can easily be included using [ender][ender] or [require-js][require-js]!
 
+A convenient pre-minified file (`fajax.min.js`) will be constructed at the root
+of the project when running `npm install`, for your convenience.
+
 
 Browser support
 ---------------
