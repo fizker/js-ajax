@@ -18,8 +18,7 @@
   , "mocha-as-promised": "~1.1.0"
   , "chai": "~1.4.2"
   , "chai-as-promised": "~3.2.3"
-  , "sinon": "git://github.com/fizker/Sinon.JS#v1.5.2-fzk"
-  , "sinon-chai": "~2.3.0"
+  , "fzkes": "~0.9.0"
   , "q": "0.8.11"
   }
 , "keywords":

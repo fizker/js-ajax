@@ -5,13 +5,13 @@ var EventEmitter = require('events').EventEmitter
 
 function XMLHttpRequest() {
 	XMLHttpRequest._instances.push(this)
-	sinon.fake(this, 'open').callsOriginal()
-	sinon.fake(this, 'send').callsOriginal()
-	sinon.fake(this, 'setRequestHeader').callsOriginal()
+	fzkes.fake(this, 'open').callsOriginal()
+	fzkes.fake(this, 'send').callsOriginal()
+	fzkes.fake(this, 'setRequestHeader').callsOriginal()
 	this._emitter = new EventEmitter
 	this._emit = this._emitter.emit.bind(this._emitter)
 	this.addEventListener = this._emitter.on.bind(this._emitter)
-	sinon.fake(this, 'addEventListener').callsOriginal()
+	fzkes.fake(this, 'addEventListener').callsOriginal()
 }
 
 XMLHttpRequest._instances = []

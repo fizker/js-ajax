@@ -53,7 +53,7 @@ describe('unit/ajax.js', function() {
 			var req
 			  , fakeQs
 			beforeEach(function() {
-				fakeQs = sinon.fake()
+				fakeQs = fzkes.fake()
 				fakeQs.returns('magic')
 				fajax.qs(fakeQs)
 				req = fajax('/abc', {
@@ -179,7 +179,7 @@ describe('unit/ajax.js', function() {
 		  , callback
 		before(function() {
 			XMLHttpRequest._reset()
-			callback = sinon.fake()
+			callback = fzkes.fake()
 
 			var opts =
 			    { onload: callback
@@ -197,7 +197,7 @@ describe('unit/ajax.js', function() {
 		  , callback
 		before(function() {
 			XMLHttpRequest._reset()
-			callback = sinon.fake()
+			callback = fzkes.fake()
 			fajax('abc', callback)
 			instance = XMLHttpRequest._instances[0]
 		})
