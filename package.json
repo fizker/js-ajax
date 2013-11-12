@@ -19,8 +19,8 @@
   , "mocha-as-promised": "~1.1.0"
   , "chai": "~1.4.2"
   , "chai-as-promised": "~3.2.3"
-  , "fzkes": "~0.9.0"
-  , "q": "0.8.11"
+  , "fzkes": "~0.10.1"
+  , "q": "~0.9.7"
   }
 , "keywords":
   [ "browser"

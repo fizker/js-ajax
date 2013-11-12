@@ -95,6 +95,17 @@ The options dictionary supports the following keys:
     It will override `Content-Type` with `application/x-www-form-urlencoded`.
 
 
+For convenience, there are some shorthands for the basic CRUD methods:
+
+- `fajax.get()`
+- `fajax.post()`
+- `fajax.put()`
+- `fajax.delete()` or `fajax.del()`
+
+They all act as the primary function (`fajax()`), except they also enforce the
+`method` option.
+
+
 Support for promises
 --------------------
 

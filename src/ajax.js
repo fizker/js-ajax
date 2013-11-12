@@ -38,14 +38,36 @@ var fajax = (function() {
 		qs = null
 	}
 
+	ajax.get = function(/*...args*/) {
+		var args = Array.prototype.slice.call(arguments)
+		var options = getOptions(args)
+		options.method = 'GET'
+		return this(options)
+	}
+	ajax.post = function(/*...args*/) {
+		var args = Array.prototype.slice.call(arguments)
+		var options = getOptions(args)
+		options.method = 'POST'
+		return this(options)
+	}
+	ajax.put = function(/*...args*/) {
+		var args = Array.prototype.slice.call(arguments)
+		var options = getOptions(args)
+		options.method = 'PUT'
+		return this(options)
+	}
+	ajax.del = ajax['delete'] = function(/*...args*/) {
+		var args = Array.prototype.slice.call(arguments)
+		var options = getOptions(args)
+		options.method = 'DELETE'
+		return this(options)
+	}
+
 	return ajax
 
-	function ajax(/*...args*/) {
-		var args = Array.prototype.slice.call(arguments)
-		var request = new XMLHttpRequest()
-		  , addEventListener = 'addEventListener'
-		  , opts = defaults
-		  , arg
+	function getOptions(args) {
+		var opts = {}
+		var arg
 		while(arg = args.shift()) {
 			if(typeof(arg) == 'string') {
 				opts.url = arg
@@ -55,6 +77,15 @@ var fajax = (function() {
 				opts = merge(opts, arg)
 			}
 		}
+		return merge(defaults, opts)
+	}
+
+	function ajax(/*...args*/) {
+		var args = Array.prototype.slice.call(arguments)
+		var request = new XMLHttpRequest()
+		var addEventListener = 'addEventListener'
+		var opts = getOptions(args)
+
 		normalizeHeaders(opts)
 		prepareBody(opts)
 		if(request[addEventListener]) {

@@ -1,12 +1,58 @@
 describe('unit/ajax.js', function() {
 	var fajax
-	  , Response = require('../helpers/Response')
+	var Response = require('../helpers/Response')
 	before(function() {
 		global.XMLHttpRequest = require('../helpers/XMLHttpRequest')
 		fajax = require('../../src/ajax')
 	})
 	after(function() {
 		delete global.XMLHttpRequest
+	})
+
+	describe('When calling `fajax.get()`', function() {
+		beforeEach(function() {
+			req = fajax.get('/abc')
+		})
+		it('should act as a shorthand for `fajax(<url>, { method: “GET” })`', function() {
+			expect(req.request.open)
+				.to.have.been.calledWith('GET')
+		})
+	})
+	describe('When calling `fajax.post()`', function() {
+		beforeEach(function() {
+			req = fajax.post('/abc')
+		})
+		it('should act as a shorthand for `fajax(<url>, { method: “POST” })`', function() {
+			expect(req.request.open)
+				.to.have.been.calledWith('POST')
+		})
+	})
+	describe('When calling `fajax.put()`', function() {
+		beforeEach(function() {
+			req = fajax.put('/abc')
+		})
+		it('should act as a shorthand for `fajax(<url>, { method: “PUT” })`', function() {
+			expect(req.request.open)
+				.to.have.been.calledWith('PUT')
+		})
+	})
+	describe('When calling `fajax.del()`', function() {
+		beforeEach(function() {
+			req = fajax.del('/abc')
+		})
+		it('should act as a shorthand for `fajax(<url>, { method: “DELETE” })`', function() {
+			expect(req.request.open)
+				.to.have.been.calledWith('DELETE')
+		})
+	})
+	describe('When calling `fajax.delete()`', function() {
+		beforeEach(function() {
+			req = fajax['delete']('/abc')
+		})
+		it('should act as a shorthand for `fajax(<url>, { method: “DELETE” })`', function() {
+			expect(req.request.open)
+				.to.have.been.calledWith('DELETE')
+		})
 	})
 
 	describe('When using form option', function() {
