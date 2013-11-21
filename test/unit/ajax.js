@@ -218,6 +218,18 @@ describe('unit/ajax.js', function() {
 		})
 	})
 
+	describe('When setting `auth` option', function() {
+		it('should set the `Authorization` header', function() {
+			var req = fajax.get('/some-url', { auth:
+				{ username: 'abc'
+				, password: 'def'
+				}
+			}).request
+			expect(req.setRequestHeader)
+				.to.have.been.calledWith('Authorization', 'Basic YWJjOmRlZg==')
+		})
+	})
+
 	describe('When response is type json', function() {
 		var body
 		before(function() {

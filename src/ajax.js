@@ -100,7 +100,14 @@ var fajax = (function() {
 				}
 			}
 		}
+
 		request.open(opts.method.toUpperCase(), opts.url, true, null, null)
+
+		if(opts.auth) {
+			var auth = opts.auth
+			opts.headers.Authorization = 'Basic '
+				+ btoa(auth.username + ':' +  auth.password)
+		}
 		if(opts.accept) {
 			opts.headers.Accept = opts.accept
 		}
