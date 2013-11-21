@@ -8,6 +8,9 @@ describe('unit/ajax.js', function() {
 	after(function() {
 		delete global.XMLHttpRequest
 	})
+	beforeEach(function() {
+		fajax.reset()
+	})
 
 	describe('When calling `fajax.get()`', function() {
 		beforeEach(function() {
@@ -187,12 +190,31 @@ describe('unit/ajax.js', function() {
 				.to.have.been.calledWith('Accept', 'abc/def')
 				.and.to.have.been.calledWith('Ghi-Jkl', 'mno')
 		})
-		it('should not allow overriding the default `accept` ', function() {
+		it('should allow overriding the default `accept`', function() {
 			fajax.defaults({ accept: 'abc' })
 			var req = fajax({ headers: { accept: 'def' } }).request
 			expect(req.setRequestHeader)
 				.to.have.been.calledWith('Accept', 'def')
 				.and.not.to.have.been.calledWith('Accept', 'abc')
+		})
+		it('should not override the default `accept` when setting other headers', function() {
+			fajax.defaults({ accept: 'abc' })
+			var req = fajax({ headers: { def: 'ghi' } }).request
+			expect(req.setRequestHeader)
+				.to.have.been.calledWith('Accept', 'abc')
+				.and.to.have.been.calledWith('Def', 'ghi')
+		})
+
+		describe('twice', function() {
+			it('should keep all non-conflicting defaults', function() {
+				fajax.defaults({ accept: 'abc' })
+				fajax.defaults({ method: 'ABC' })
+				var req = fajax().request
+				expect(req.setRequestHeader)
+					.to.have.been.calledWith('Accept', 'abc')
+				expect(req.open)
+					.to.have.been.calledWith('ABC')
+			})
 		})
 	})
 

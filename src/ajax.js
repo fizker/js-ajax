@@ -7,6 +7,8 @@ var fajax = (function() {
 		module.exports = ajax
 	}
 
+	var merge = require('fmerge')
+
 	var defaults =
 	    { method: 'GET'
 	    , headers: {}
@@ -135,18 +137,6 @@ var fajax = (function() {
 				deferred.resolve(res)
 			}
 		}
-	}
-
-	function merge(/*...args*/) {
-		var args = Array.prototype.slice.call(arguments)
-		  , ret = {}
-		for(var i = 0, l = args.length; i < l; i++) {
-			var a = args[i]
-			for(var key in a) {
-				ret[key] = a[key]
-			}
-		}
-		return ret
 	}
 
 	function normalizeHeaders(opts) {

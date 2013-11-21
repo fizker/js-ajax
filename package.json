@@ -12,7 +12,9 @@
   , "url": "git://github.com/fizker/js-ajax.git"
   }
 , "dependencies":
-  { "uglify-js": "~2.3.6"
+  { "uglify-js": "~2.4.3"
+  , "browserify": "~2.35.4"
+  , "fmerge": "~1.0.1"
   }
 , "devDependencies":
   { "mocha": "~1.7.4"
