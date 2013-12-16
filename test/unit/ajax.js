@@ -1,7 +1,7 @@
 describe('unit/ajax.js', function() {
 	var fajax
 	var Response = require('../helpers/Response')
-	before(function() {
+	beforeEach(function() {
 		global.XMLHttpRequest = require('../helpers/XMLHttpRequest')
 		fajax = require('../../src/ajax')
 	})
@@ -204,17 +204,17 @@ describe('unit/ajax.js', function() {
 				.to.have.been.calledWith('Accept', 'abc')
 				.and.to.have.been.calledWith('Def', 'ghi')
 		})
+	})
 
-		describe('twice', function() {
-			it('should keep all non-conflicting defaults', function() {
-				fajax.defaults({ accept: 'abc' })
-				fajax.defaults({ method: 'ABC' })
-				var req = fajax().request
-				expect(req.setRequestHeader)
-					.to.have.been.calledWith('Accept', 'abc')
-				expect(req.open)
-					.to.have.been.calledWith('ABC')
-			})
+	describe('When calling defaults twice', function() {
+		it('should keep all non-conflicting defaults', function() {
+			fajax.defaults({ accept: 'abc' })
+			fajax.defaults({ method: 'ABC' })
+			var req = fajax().request
+			expect(req.setRequestHeader)
+				.to.have.been.calledWith('Accept', 'abc')
+			expect(req.open)
+				.to.have.been.calledWith('ABC')
 		})
 	})
 
@@ -232,7 +232,7 @@ describe('unit/ajax.js', function() {
 
 	describe('When response is type json', function() {
 		var body
-		before(function() {
+		beforeEach(function() {
 			var prom = fajax('a', function(res) { body = res.body })
 			  , request = prom.request
 			request._load(new Response(
@@ -257,7 +257,7 @@ describe('unit/ajax.js', function() {
 	describe('When calling `fajax(opts)`', function() {
 		var instance
 		  , callback
-		before(function() {
+		beforeEach(function() {
 			XMLHttpRequest._reset()
 			callback = fzkes.fake()
 
@@ -275,7 +275,7 @@ describe('unit/ajax.js', function() {
 	describe('When calling with `fajax(url, callback)`', function() {
 		var instance
 		  , callback
-		before(function() {
+		beforeEach(function() {
 			XMLHttpRequest._reset()
 			callback = fzkes.fake()
 			fajax('abc', callback)
