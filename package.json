@@ -1,5 +1,5 @@
 { "name": "fajax"
-, "version": "0.3.0"
+, "version": "0.3.1"
 , "description": "A tiny ender-wrapper around XMLHttpRequest."
 , "main": "src/ajax.js"
 , "scripts":
@@ -14,7 +14,7 @@
 , "dependencies":
   { "uglify-js": "~2.4.3"
   , "browserify": "~2.35.4"
-  , "fmerge": "~1.0.1"
+  , "fmerge": "~1.0.2"
   }
 , "devDependencies":
   { "mocha": "~1.7.4"
