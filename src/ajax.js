@@ -40,30 +40,19 @@ var fajax = (function() {
 		qs = null
 	}
 
-	ajax.get = function(/*...args*/) {
+	ajax.request = function(method/*, ...args*/) {
 		var args = Array.prototype.slice.call(arguments)
 		var options = getOptions(args)
-		options.method = 'GET'
+		options.method = method.toUpperCase()
 		return this(options)
 	}
-	ajax.post = function(/*...args*/) {
-		var args = Array.prototype.slice.call(arguments)
-		var options = getOptions(args)
-		options.method = 'POST'
-		return this(options)
-	}
-	ajax.put = function(/*...args*/) {
-		var args = Array.prototype.slice.call(arguments)
-		var options = getOptions(args)
-		options.method = 'PUT'
-		return this(options)
-	}
-	ajax.del = ajax['delete'] = function(/*...args*/) {
-		var args = Array.prototype.slice.call(arguments)
-		var options = getOptions(args)
-		options.method = 'DELETE'
-		return this(options)
-	}
+	ajax.get = ajax.request.bind(ajax, 'GET')
+	ajax.post = ajax.request.bind(ajax, 'POST')
+	ajax.put = ajax.request.bind(ajax, 'PUT')
+	ajax.del = ajax['delete'] = ajax.request.bind(ajax, 'DELETE')
+	ajax.patch = ajax.request.bind(ajax, 'PATCH')
+	ajax.options = ajax.request.bind(ajax, 'OPTIONS')
+	ajax.head = ajax.request.bind(ajax, 'HEAD')
 
 	return ajax
 

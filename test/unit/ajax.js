@@ -12,6 +12,15 @@ describe('unit/ajax.js', function() {
 		fajax.reset()
 	})
 
+	describe('When calling `fajax.request(”method”, ”url”)`', function() {
+		beforeEach(function() {
+			req = fajax.request('ABC', '/abc')
+		})
+		it('should act as a shorthand for `fajax(”url” { method: ”method” })`', function() {
+			expect(req.request.open)
+				.to.have.been.calledWith('ABC')
+		})
+	})
 	describe('When calling `fajax.get()`', function() {
 		beforeEach(function() {
 			req = fajax.get('/abc')

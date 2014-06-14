@@ -21,6 +21,8 @@ It is tested in the following browsers:
 - IE v. 9
 - IE v. 8
 
+Note for IE8 and below: You need to supply a shim for Function.prototype.bind.
+
 It does not work in IE7 or below out of the box when receiving `application/json`,
 because `JSON.parse` is not supported. If this is a requirement, then use something
 like [json2](https://github.com/douglascrockford/JSON-js) from
@@ -94,13 +96,19 @@ The options dictionary supports the following keys:
 
     It will override `Content-Type` with `application/x-www-form-urlencoded`.
 
+It is also possible to initiate a request with `fajax.request()`.
+It takes the method as the first parameter, but otherwise acts exactly like
+`fajax()`.
 
-For convenience, there are some shorthands for the basic CRUD methods:
+For convenience, there are shorthands for the basic HTTP methods:
 
 - `fajax.get()`
+- `fajax.head()`
 - `fajax.post()`
 - `fajax.put()`
 - `fajax.delete()` or `fajax.del()`
+- `fajax.patch()`
+- `fajax.options()`
 
 They all act as the primary function (`fajax()`), except they also enforce the
 `method` option.
