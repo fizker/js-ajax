@@ -117,6 +117,15 @@ var fajax = (function() {
 			deferred = new jQuery.Deferred
 			ret.promise = deferred.promise()
 		}
+
+		if(ret.promise) {
+			ret.promise = ret.promise.then(function(xhr) {
+				delete xhr.then
+				return xhr
+			})
+			ret.then = ret.promise.then
+		}
+
 		return ret
 
 		function success(req) {
