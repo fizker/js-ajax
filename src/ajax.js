@@ -125,7 +125,6 @@ var fajax = (function() {
 					resolve(deferred._ans)
 				}
 			})
-			deferred = function() {}
 		} else if(typeof(jQuery) != 'undefined') {
 			deferred = new jQuery.Deferred
 			ret.promise = deferred.promise()
