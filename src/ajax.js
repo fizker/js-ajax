@@ -136,7 +136,7 @@ var fajax = (function() {
 				delete xhr.then
 				return xhr
 			})
-			ret.then = ret.promise.then
+			ret.then = ret.promise.then.bind(ret.promise)
 		}
 
 		return ret
