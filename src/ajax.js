@@ -106,13 +106,26 @@ var fajax = (function() {
 		request.send(opts.body)
 
 		var ret = { request: request }
-		  , deferred
+		var deferred
 		if(defer) {
 			deferred = defer()
 			ret.promise = deferred.promise
 		} else if(typeof(Q) != 'undefined') {
 			deferred = Q.defer()
 			ret.promise = deferred.promise
+		} else if(typeof(Promise) != 'undefined') {
+			deferred = {
+				resolve: function(ans) {
+					deferred._ans = ans
+				}
+			}
+			ret.promise = new Promise(function(resolve, reject) {
+				deferred.resolve = resolve
+				if(deferred._ans) {
+					resolve(deferred._ans)
+				}
+			})
+			deferred = function() {}
 		} else if(typeof(jQuery) != 'undefined') {
 			deferred = new jQuery.Deferred
 			ret.promise = deferred.promise()
