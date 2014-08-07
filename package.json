@@ -4,7 +4,6 @@
 , "main": "src/ajax.js"
 , "scripts":
   { "test": "mocha"
-  , "install": "node install.js"
   }
 , "repository":
   { "type": "git"
@@ -24,9 +23,6 @@
 , "keywords":
   [ "browser"
   , "ajax"
-  , "ender"
-  , "amd"
-  , "requirejs"
   , "xmlhttprequest"
   ]
 , "author": "Benjamin Horsleben"
