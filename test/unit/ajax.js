@@ -229,11 +229,12 @@ describe('unit/ajax.js', function() {
 
 	describe('When setting `auth` option', function() {
 		it('should set the `Authorization` header', function() {
-			var req = fajax.get('/some-url', { auth:
-				{ username: 'abc'
-				, password: 'def'
+			var req = fajax.get('/some-url', {
+				auth: {
+					username: 'abc',
+					password: 'def',
 				}
-			}).request
+			}, function() {}).request
 			expect(req.setRequestHeader)
 				.to.have.been.calledWith('Authorization', 'Basic YWJjOmRlZg==')
 		})
@@ -241,23 +242,29 @@ describe('unit/ajax.js', function() {
 
 	describe('When response is type json', function() {
 		var body
-		beforeEach(function() {
-			var prom = fajax('a', function(res) { body = res.body })
-			  , request = prom.request
-			request._load(new Response(
-			{ headers: { 'Content-type': 'application/json' }
-			, body: { a: 1, b: 2 }
+		beforeEach(function(done) {
+			var prom = fajax('a', function(res) {
+				body = res.body
+				done()
+			})
+			var request = prom.request
+			request._load(new Response({
+				headers: { 'Content-type': 'application/json' },
+				body: { a: 1, b: 2 },
 			}))
 		})
 		it('should automatically parse it', function() {
 			expect(body).to.deep.equal({ a: 1, b: 2 })
 		})
-		it('should parse properly when charset is also given', function() {
-			var prom = fajax('a', function(res) { body = res.body })
-			  , request = prom.request
-			request._load(new Response(
-			{ headers: { 'Content-type': 'application/json; charset=utf-8' }
-			, body: { a: 1, b: 2 }
+		it('should parse properly when charset is also given', function(done) {
+			var prom = fajax('a', function(res) {
+				body = res.body
+				done()
+			})
+			var request = prom.request
+			request._load(new Response({
+				headers: { 'Content-type': 'application/json; charset=utf-8' },
+				body: { a: 1, b: 2 },
 			}))
 			expect(body).to.deep.equal({ a: 1, b: 2 })
 		})
@@ -265,15 +272,15 @@ describe('unit/ajax.js', function() {
 
 	describe('When calling `fajax(opts)`', function() {
 		var instance
-		  , callback
+		var callback
 		beforeEach(function() {
 			XMLHttpRequest._reset()
 			callback = fzkes.fake()
 
-			var opts =
-			    { onload: callback
-			    , url: 'abc'
-			    }
+			var opts = {
+				onload: callback,
+				url: 'abc',
+			}
 			instance = fajax(opts).request
 		})
 		it('should properly assign the url and onload options', function() {
@@ -283,7 +290,7 @@ describe('unit/ajax.js', function() {
 
 	describe('When calling with `fajax(url, callback)`', function() {
 		var instance
-		  , callback
+		var callback
 		beforeEach(function() {
 			XMLHttpRequest._reset()
 			callback = fzkes.fake()

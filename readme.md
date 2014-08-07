@@ -16,6 +16,11 @@ It is tested in the following browsers:
 - IE v. 9
 - IE v. 8
 
+It requires an ES6 compatible `Promise` implementation. You can shim this with
+either `es6-shim` or `es6-promise`. The `Promise` should be available in global
+scope.
+
+
 Note for IE8 and below: You need to supply a shim for Function.prototype.bind.
 
 It does not work in IE7 or below out of the box when receiving `application/json`,
@@ -24,32 +29,23 @@ like [json2](https://github.com/douglascrockford/JSON-js) from
 Douglas Crockford. Everything else seems to work.
 
 
-Examples
---------
-
-For a quick example, check [the manual test file](test/manual/browser.html).
-It uses [jQuery][jquery] as a promise library and `fajax` for calling the
-bundled server (placed in the same folder. It requires [node][node] to run).
-
-
 API
 ---
 
-Including this page in the browser (`window.fajax`) or through [ender][ender]
-(`$.ajax` or `require('fajax')`) gives you access to the basic method.
+Include this by calling `var fajax = require('fajax')`. This require that you
+use a build-tool that is compatible with CommonJS, such as browserify or webpack.
 
-It have three static methods:
 
-1.  `fajax.defer(deferConstructor)`: Assigns a specific defer-function. More on
-    this in the segment below.
-2.  `fajax.qs(queryStringCreator)`: Assings a specific query-string creator
+The returned function have two static methods:
+
+1.  `fajax.qs(queryStringCreator)`: Assigns a specific query-string creator
     function. This is used when `form` is specified in the options.
 
     For example, it is simple to use the excellent [qs][qs] library:
 
         // fajax and qs loaded via ender:
         $.ajax.qs($.stringify)
-3.  `fajax.defaults(newDefaults)`: Updates the defaults. Notice that this adds
+2.  `fajax.defaults(newDefaults)`: Updates the defaults. Notice that this adds
     to the defaults, so
 
         fajax.defaults({ method: 'post' });
@@ -62,13 +58,13 @@ It have three static methods:
         , accept: 'application/json'
         })
 
-The `fajax` function can take 3 arguments:
+The function itself can take 3 arguments:
 
 1.  An options dictionary (more on this below).
 2.  A `string` of the url for the request. This can also be given as `url` in
     the options dictionary.
-3.  A `function` that will be called when the request is complete. This can also
-    be given as `onload` in the options dictionary.
+3.  An optional `function` that will be called when the request is complete.
+    This can also be given as `onload` in the options dictionary.
 
 The options dictionary supports the following keys:
 
@@ -109,30 +105,5 @@ They all act as the primary function (`fajax()`), except they also enforce the
 `method` option.
 
 
-Support for promises
---------------------
-
-There is rudimentary support for promises, but you have to supply the library to
-be used.
-
-It automatically picks up [jQuery][jquery] or [Q][q] if they are referenced in
-global-scope (as either `jQuery` or `Q`).
-
-If you need other libraries, or your library is not exposed globally, you can
-set your own using `fajax(deferConstructor)`. It expects the given function to
-return a deferred, which holds a `resolve()` and `reject()` method, as well as
-a `promise` property for accessing the promise. This syntax equals [Q][q] exactly,
-and it can actually be called like `fajax.defer(Q.defer)`.
-
-For an example on how to use this with [ender][ender], you can look at
-[the root client-side file](https://github.com/fizker/vp-lan/blob/master/client/js/index.js)
-for [vp-lan][vp-lan], a project that was the requirement behind this project.
-
-
-[jquery]: http://jquery.com
-[q]: http://documentup.com/kriskowal/q
-[ender]: http://ender.jit.su
-[require-js]: http://requirejs.org
 [qs]: https://github.com/visionmedia/node-querystring
-[vp-lan]: https://github.com/fizker/vp-lan
 [node]: http://nodejs.org

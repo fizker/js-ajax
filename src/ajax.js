@@ -99,29 +99,17 @@ function ajax(/*...args*/) {
 	request.send(opts.body)
 
 	var ret = { request: request }
-	var deferred
-	if(defer) {
-		deferred = defer()
-		ret.promise = deferred.promise
-	} else if(typeof(Q) != 'undefined') {
-		deferred = Q.defer()
-		ret.promise = deferred.promise
-	} else if(typeof(Promise) != 'undefined') {
-		deferred = {
-			resolve: function(ans) {
-				deferred._ans = ans
-			}
+	var deferred = {
+		resolve: function(ans) {
+			deferred._ans = ans
 		}
-		ret.promise = new Promise(function(resolve, reject) {
-			deferred.resolve = resolve
-			if(deferred._ans) {
-				resolve(deferred._ans)
-			}
-		})
-	} else if(typeof(jQuery) != 'undefined') {
-		deferred = new jQuery.Deferred
-		ret.promise = deferred.promise()
 	}
+	ret.promise = new Promise(function(resolve, reject) {
+		deferred.resolve = resolve
+		if(deferred._ans) {
+			resolve(deferred._ans)
+		}
+	})
 
 	if(ret.promise) {
 		ret.promise = ret.promise.then(function(xhr) {

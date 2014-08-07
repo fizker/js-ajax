@@ -6,3 +6,5 @@ global.fzkes = require('fzkes')
 chai.use(fzkes)
 
 global.btoa = require('btoa')
+
+global.Promise = require('es6-promise').Promise
