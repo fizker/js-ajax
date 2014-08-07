@@ -7,15 +7,11 @@ var defaults = {
 	headers: {}
 }
 var orgDefaults = defaults
-var defer
 var qs
 var contentTypes = {
 	json: /^application\/json/
 }
 
-ajax.defer = function(constr) {
-	defer = constr
-}
 ajax.qs = function(func) {
 	qs = func
 }
@@ -29,7 +25,6 @@ ajax.defaults = function(newDefaults) {
 }
 ajax.reset = function() {
 	defaults = orgDefaults
-	defer = null
 	qs = null
 }
 
@@ -46,8 +41,6 @@ ajax.del = ajax['delete'] = ajax.request.bind(ajax, 'DELETE')
 ajax.patch = ajax.request.bind(ajax, 'PATCH')
 ajax.options = ajax.request.bind(ajax, 'OPTIONS')
 ajax.head = ajax.request.bind(ajax, 'HEAD')
-
-return ajax
 
 function getOptions(args) {
 	var opts = {}
@@ -109,15 +102,11 @@ function ajax(/*...args*/) {
 		if(deferred._ans) {
 			resolve(deferred._ans)
 		}
+	}).then(function(xhr) {
+		delete xhr.then
+		return xhr
 	})
-
-	if(ret.promise) {
-		ret.promise = ret.promise.then(function(xhr) {
-			delete xhr.then
-			return xhr
-		})
-		ret.then = ret.promise.then.bind(ret.promise)
-	}
+	ret.then = ret.promise.then.bind(ret.promise)
 
 	return ret
 
@@ -131,9 +120,7 @@ function ajax(/*...args*/) {
 		if(opts.onload) {
 			opts.onload(res)
 		}
-		if(deferred) {
-			deferred.resolve(res)
-		}
+		deferred.resolve(res)
 	}
 }
 
