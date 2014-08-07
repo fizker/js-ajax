@@ -1,20 +1,17 @@
 { "name": "fajax"
 , "version": "0.3.3"
-, "description": "A tiny ender-wrapper around XMLHttpRequest."
+, "description": "A tiny wrapper around XMLHttpRequest."
 , "main": "src/ajax.js"
 , "scripts":
   { "test": "mocha"
   , "install": "node install.js"
   }
-, "ender": "ender.js"
 , "repository":
   { "type": "git"
   , "url": "git://github.com/fizker/js-ajax.git"
   }
 , "dependencies":
-  { "uglify-js": "~2.4.3"
-  , "browserify": "~2.35.4"
-  , "fmerge": "~1.0.2"
+  { "fmerge": "~1.0.2"
   }
 , "devDependencies":
   { "mocha": "~1.7.4"
