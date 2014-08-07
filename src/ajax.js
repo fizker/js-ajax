@@ -1,10 +1,12 @@
 module.exports = ajax
 
 var merge = require('fmerge')
+var urlHelper = require('url')
 
 var defaults = {
 	method: 'GET',
-	headers: {}
+	headers: {},
+	baseUrl: '',
 }
 var orgDefaults = defaults
 var qs
@@ -76,7 +78,16 @@ function ajax(/*...args*/) {
 		}
 	}
 
-	request.open(opts.method.toUpperCase(), opts.url, true, null, null)
+	var url = opts.url
+	if(opts.baseUrl) {
+		url = opts.baseUrl
+		if(!url.endsWith('/')) {
+			url += '/'
+		}
+		url = urlHelper.resolve(url, opts.url)
+	}
+
+	request.open(opts.method.toUpperCase(), url, true, null, null)
 
 	if(opts.auth) {
 		var auth = opts.auth
@@ -126,7 +137,7 @@ function ajax(/*...args*/) {
 
 function normalizeHeaders(opts) {
 	var newHeaders = {}
-	  , headers = opts.headers || {}
+	var headers = opts.headers || {}
 	for(var key in headers) {
 		var transformedKey = transformKey(key)
 		newHeaders[transformedKey] = headers[key]

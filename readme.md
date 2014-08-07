@@ -58,6 +58,19 @@ The returned function have two static methods:
         , accept: 'application/json'
         })
 
+An interesting parameter in the defaults is `baseUrl`. This is resolved on the
+url passed in when initiating a request, so this is an easy way to normalize
+urls based on either a folder or a server.
+
+    Example:
+    fajax.defaults({ baseUrl: 'http://example.com' })
+    fajax.get('/test') // -> GET to http://example.com/test
+
+    fajax.defaults({ baseUrl: '/foo' })
+    fajax.get('bar') // -> GET to <currentDomain>/foo/bar
+    fajax.get('/absolute') // -> GET to <currentDomain>/absolute
+
+
 The function itself can take 3 arguments:
 
 1.  An options dictionary (more on this below).
