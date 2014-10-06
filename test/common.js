@@ -1,5 +1,6 @@
 global.chai = require('chai')
 global.expect = chai.expect
+chai.should()
 chai.use(require('chai-as-promised'))
 
 global.fzkes = require('fzkes')
