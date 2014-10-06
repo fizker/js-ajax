@@ -115,9 +115,11 @@ function ajax(/*...args*/) {
 		}
 	}).then(function(xhr) {
 		delete xhr.then
+		if(xhr.status >= 400) throw xhr
 		return xhr
 	})
 	ret.then = ret.promise.then.bind(ret.promise)
+	ret['catch'] = ret.promise['catch'].bind(ret.promise)
 
 	return ret
 

@@ -12,6 +12,68 @@ describe('unit/ajax.js', function() {
 		fajax.reset()
 	})
 
+	describe('When getting a response', function() {
+		beforeEach(function() {
+			this.result = fajax.get('http://example.com/some-url')
+		})
+		describe('with status 200', function() {
+			beforeEach(function() {
+				this.result.request._load(new Response({
+					status: 200,
+					body: 'OK',
+				}))
+			})
+			it('should resolve the promise', function() {
+				return this.result
+					.should.eventually.be.resolved
+			})
+			it('should return the XHR', function() {
+				return this.result.then(function(xhr) {
+					xhr.should.have.property('status', 200)
+					xhr.should.have.property('body', 'OK')
+				})
+			})
+		})
+		describe('with status 399', function() {
+			beforeEach(function() {
+				this.result.request._load(new Response({
+					status: 399,
+					body: '399 Body',
+				}))
+			})
+			it('should resolve the promise', function() {
+				return this.result
+					.should.eventually.be.resolved
+			})
+			it('should return the XHR', function() {
+				return this.result.then(function(xhr) {
+					xhr.should.have.property('status', 399)
+					xhr.should.have.property('body', '399 Body')
+				})
+			})
+		})
+		describe('with status 400', function() {
+			beforeEach(function() {
+				this.result.request._load(new Response({
+					status: 400,
+					body: 'Invalid',
+				}))
+			})
+			it('should reject the promise', function() {
+				return this.result
+					.should.eventually.be.rejected
+			})
+			it('should return the XHR', function() {
+				return this.result.then(function() {
+					throw new Error('This promise should be rejected, but was not')
+				}, function(xhr) {
+					xhr.should.have.property('status', 400)
+					xhr.should.have.property('body', 'Invalid')
+				})
+			})
+		})
+	})
+
 	describe('When calling `fajax.request(”method”, ”url”)`', function() {
 		beforeEach(function() {
 			req = fajax.request('ABC', '/abc')
