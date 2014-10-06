@@ -17,16 +17,43 @@ It is tested in the following browsers:
 - IE v. 8
 
 It requires an ES6 compatible `Promise` implementation. You can shim this with
-either `es6-shim` or `es6-promise`. The `Promise` should be available in global
-scope.
+either `es6-shim` or `es6-promise`. The `Promise` constructor should be available
+in global scope.
 
 
 Note for IE8 and below: You need to supply a shim for Function.prototype.bind.
 
 It does not work in IE7 or below out of the box when receiving `application/json`,
-because `JSON.parse` is not supported. If this is a requirement, then use something
-like [json2](https://github.com/douglascrockford/JSON-js) from
+because `JSON.parse` is not supported. If this is a requirement, then use
+something like [json2](https://github.com/douglascrockford/JSON-js) from
 Douglas Crockford. Everything else seems to work.
+
+
+Examples
+--------
+
+Using this could not be more simple:
+
+    var fajax = require('fajax')
+    fajax.defaults({
+        baseUrl: 'http://my-server.com',
+        accept: 'application/json'
+    })
+    fajax.get('/some-resource').then(function(xhr) {
+        // if the server returns Content-Type: application/json,
+        // this is already parsed for us
+        var jsonBody = xhr.body
+    })
+
+    // Sometime later
+    fajax.post('/some-action', { json: jsonBody })
+        .then(function(xhr) {
+            // Report success
+        },
+        // The promise is rejected if the status code is 400 or higher
+        function(xhr) {
+            // Handle validation error or the like
+        })
 
 
 API
