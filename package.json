@@ -1,5 +1,5 @@
 { "name": "fajax"
-, "version": "0.3.3"
+, "version": "0.4.0"
 , "description": "A tiny wrapper around XMLHttpRequest."
 , "main": "src/ajax.js"
 , "scripts":
