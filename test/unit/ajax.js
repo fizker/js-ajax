@@ -4,9 +4,13 @@ describe('unit/ajax.js', function() {
 	beforeEach(function() {
 		global.XMLHttpRequest = require('../helpers/XMLHttpRequest')
 		fajax = require('../../src/ajax')
+		global.location = {
+			pathname: '/'
+		}
 	})
 	after(function() {
 		delete global.XMLHttpRequest
+		delete global.location
 	})
 	beforeEach(function() {
 		fajax.reset()
@@ -347,6 +351,94 @@ describe('unit/ajax.js', function() {
 		})
 		it('should properly assign the url and onload options', function() {
 			expect(instance.open).to.have.been.calledWith('GET', 'abc')
+		})
+	})
+
+	describe('When setting `baseUrl` in defaults', function() {
+		beforeEach(function() {
+			fajax.defaults({
+				baseUrl: 'http://example.com',
+			})
+			XMLHttpRequest._reset()
+			this.xhr = fajax.get('/some-url').request
+		})
+		it('should prepend the baseUrl', function() {
+			expect(this.xhr.open)
+				.to.have.been.calledWith('GET', 'http://example.com/some-url')
+		})
+
+		describe('with http: module', function() {
+			beforeEach(function() {
+				fajax.defaults({
+					baseUrl: 'http://example.com',
+				})
+				XMLHttpRequest._reset()
+				this.xhr = fajax.get('http://domain.com/some-url').request
+			})
+			it('should not prepend the baseUrl', function() {
+				expect(this.xhr.open)
+					.to.have.been.calledWith('GET', 'http://domain.com/some-url')
+			})
+		})
+
+		describe('with https: module', function() {
+			beforeEach(function() {
+				fajax.defaults({
+					baseUrl: 'http://example.com',
+				})
+				XMLHttpRequest._reset()
+				this.xhr = fajax.get('https://domain.com/some-url').request
+			})
+			it('should not prepend the baseUrl', function() {
+				expect(this.xhr.open)
+					.to.have.been.calledWith('GET', 'https://domain.com/some-url')
+			})
+		})
+
+		describe('with nameless module', function() {
+			beforeEach(function() {
+				fajax.defaults({
+					baseUrl: 'http://example.com',
+				})
+				XMLHttpRequest._reset()
+				this.xhr = fajax.get('//domain.com/some-url').request
+			})
+			it('should not prepend the baseUrl', function() {
+				expect(this.xhr.open)
+					.to.have.been.calledWith('GET', 'http://domain.com/some-url')
+			})
+		})
+
+		describe('with relative url', function() {
+			beforeEach(function() {
+				global.location = {
+					pathname: '/prefix/'
+				}
+
+				fajax.defaults({
+					baseUrl: 'http://example.com',
+				})
+				XMLHttpRequest._reset()
+				this.xhr = fajax.get('some-url').request
+			})
+			it('should prepend the baseUrl and local path', function() {
+				expect(this.xhr.open)
+					.to.have.been.calledWith('GET', 'http://example.com/prefix/some-url')
+			})
+		})
+
+		describe('with a prefixed folder', function() {
+			beforeEach(function() {
+				fajax.defaults({
+					baseUrl: 'http://example.com/prefix/',
+				})
+				XMLHttpRequest._reset()
+				this.xhr = fajax.get('/some-url').request
+			})
+			it('should prepend the baseUrl and folder', function() {
+				expect(this.xhr.open)
+					.to.have.been.calledWith('GET', 'http://example.com/prefix/some-url')
+			})
 		})
 	})
 

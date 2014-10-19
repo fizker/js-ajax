@@ -18,6 +18,7 @@
   , "chai-as-promised": "^4.1.1"
   , "fzkes": "^0.14.0"
   , "es6-promise": "^1.0.0"
+  , "es6-shim": "^0.17.0"
   , "btoa": "^1.1.2"
   }
 , "keywords":

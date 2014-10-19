@@ -81,10 +81,12 @@ function ajax(/*...args*/) {
 	var url = opts.url
 	if(opts.baseUrl) {
 		url = opts.baseUrl
-		if(!url.endsWith('/')) {
-			url += '/'
+		var endpointUrl = urlHelper.resolve(global.location.pathname, opts.url)
+
+		if(endpointUrl[0] == '/' && endpointUrl[1] != '/') {
+			endpointUrl = endpointUrl.slice(1)
 		}
-		url = urlHelper.resolve(url, opts.url)
+		url = urlHelper.resolve(url, endpointUrl)
 	}
 
 	request.open(opts.method.toUpperCase(), url, true, null, null)
