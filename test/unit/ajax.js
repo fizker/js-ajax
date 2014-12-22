@@ -193,6 +193,20 @@ describe('unit/ajax.js', function() {
 		})
 	})
 
+	describe('When supplying null as json option', function() {
+		beforeEach(function() {
+			this.req = fajax('/abc', { json: null })
+		})
+		it('should send it encoded', function() {
+			expect(this.req.request.send)
+				.to.have.been.calledWith('null')
+		})
+		it('should set content-type to application/json', function() {
+			expect(this.req.request.setRequestHeader)
+				.to.have.been.calledWith('Content-Type', 'application/json')
+		})
+	})
+
 	describe('When supplying json option', function() {
 		var req
 		beforeEach(function() {

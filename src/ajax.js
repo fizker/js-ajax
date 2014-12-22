@@ -175,7 +175,8 @@ function prepareBody(opts) {
 			.join('&')
 		return
 	}
-	if(opts.json) {
+
+	if(opts.json !== undefined) {
 		opts.body = JSON.stringify(opts.json)
 		opts.headers['Content-Type'] = 'application/json'
 		return
