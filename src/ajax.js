@@ -104,13 +104,12 @@ function ajax(/*...args*/) {
 	}
 	request.send(opts.body)
 
-	var ret = { request: request }
 	var deferred = {
 		resolve: function(ans) {
 			deferred._ans = ans
 		}
 	}
-	ret.promise = new Promise(function(resolve, reject) {
+	var ret = new Promise(function(resolve, reject) {
 		deferred.resolve = resolve
 		if(deferred._ans) {
 			resolve(deferred._ans)
@@ -120,8 +119,10 @@ function ajax(/*...args*/) {
 		if(xhr.status >= 400) throw xhr
 		return xhr
 	})
-	ret.then = ret.promise.then.bind(ret.promise)
-	ret['catch'] = ret.promise['catch'].bind(ret.promise)
+
+	ret.promise = ret
+	ret.request = request
+	ret.xhr = request
 
 	return ret
 
