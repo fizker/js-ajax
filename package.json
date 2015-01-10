@@ -1,31 +1,32 @@
-{ "name": "fajax"
-, "version": "0.4.0"
-, "description": "A tiny wrapper around XMLHttpRequest."
-, "main": "src/ajax.js"
-, "scripts":
-  { "test": "mocha"
-  }
-, "repository":
-  { "type": "git"
-  , "url": "git://github.com/fizker/js-ajax.git"
-  }
-, "dependencies":
-  { "fmerge": "^1.2.0"
-  }
-, "devDependencies":
-  { "mocha": "^1.21.4"
-  , "chai": "^1.9.1"
-  , "chai-as-promised": "^4.1.1"
-  , "fzkes": "^0.14.0"
-  , "es6-promise": "^1.0.0"
-  , "es6-shim": "^0.17.0"
-  , "btoa": "^1.1.2"
-  }
-, "keywords":
-  [ "browser"
-  , "ajax"
-  , "xmlhttprequest"
-  ]
-, "author": "Benjamin Horsleben"
-, "license": "WTFPL"
+{
+  "name": "fajax",
+  "version": "0.5.0",
+  "description": "A tiny wrapper around XMLHttpRequest.",
+  "main": "src/ajax.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fizker/js-ajax.git"
+  },
+  "dependencies": {
+    "fmerge": "^1.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^1.21.4",
+    "chai": "^1.9.1",
+    "chai-as-promised": "^4.1.1",
+    "fzkes": "^0.14.0",
+    "es6-promise": "^1.0.0",
+    "es6-shim": "^0.17.0",
+    "btoa": "^1.1.2"
+  },
+  "keywords": [
+    "browser",
+    "ajax",
+    "xmlhttprequest"
+  ],
+  "author": "Benjamin Horsleben",
+  "license": "WTFPL"
 }
