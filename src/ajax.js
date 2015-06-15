@@ -128,8 +128,8 @@ function ajax(/*...args*/) {
 
 	function success(req) {
 		var res = req.target || req
-		  , body = res.responseText
-		if(contentTypes.json.test(res.getResponseHeader('content-type'))) {
+		  , body = res.responseText;
+		if(contentTypes.json.test(res.getResponseHeader('content-type')) || url.substr(url.length - 5) === '.json') {
 			body = JSON.parse(body)
 		}
 		res.body = body
